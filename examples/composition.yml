@@ -1,0 +1,190 @@
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: crossplane-clusterrolebinding
+subjects:
+  - kind: ServiceAccount
+    name: crossplane
+    namespace: crossplane-system
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: ""
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xplatforms.ovh.saagie.io
+spec:
+  group: ovh.saagie.io
+  names:
+    kind: XPlatform
+    plural: xplatforms
+  claimNames:
+    kind: Platform
+    plural: platforms
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                parameters:
+                  type: object
+                  properties:
+                    kubernetes:
+                      type: object
+                      properties:
+                        version:
+                          type: string
+                        flavorName:
+                          type: string
+                    postgresql:
+                      type: object
+                      properties:
+                        version:
+                          type: string
+                        plan:
+                          type: string
+                        flavor:
+                          type: string
+                    serviceName:
+                      type: string
+                    region:
+                      type: string
+                    zone:
+                      type: string
+              required:
+                - parameters
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: test
+  labels:
+    crossplane.io/xrd: xplatforms.ovh.saagie.io
+spec:
+  compositeTypeRef:
+    apiVersion: ovh.saagie.io/v1alpha1
+    kind: XPlatform
+  resources:
+    - name: database
+      base:
+        apiVersion: database.cloud.ovh.upbound.io/v1alpha1
+        kind: Database
+        spec:
+          forProvider:
+            description: "postgresql"
+            engine: postgresql
+#            version: "14"
+#            plan: essential
+#            flavor: db1-4
+            nodes:
+              - region: GRA
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.serviceName
+          toFieldPath: spec.forProvider.serviceName
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.postgresql.version
+          toFieldPath: spec.forProvider.version
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.postgresql.plan
+          toFieldPath: spec.forProvider.plan
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.postgresql.flavor
+          toFieldPath: spec.forProvider.flavor
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.postgresql.region
+          toFieldPath: spec.forProvider.nodes[0].region
+    - name: kube
+      base:
+        apiVersion: kube.cloud.ovh.upbound.io/v1alpha1
+        kind: Kube
+        spec:
+          forProvider:
+            name: "cluster"
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.serviceName
+          toFieldPath: spec.forProvider.serviceName
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.zone
+          toFieldPath: spec.forProvider.region
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.kubernetes.version
+          toFieldPath: spec.forProvider.version
+    - name: kubenode
+      base:
+        apiVersion: kube.cloud.ovh.upbound.io/v1alpha1
+        kind: NodePool
+        spec:
+          forProvider:
+            kubeIdSelector:
+              matchControllerRef: true
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.serviceName
+          toFieldPath: spec.forProvider.serviceName
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.kubernetes.flavorName
+          toFieldPath: spec.forProvider.flavorName
+    - name: kubeiperstrictions
+      base:
+        apiVersion: kube.cloud.ovh.upbound.io/v1alpha1
+        kind: IpRestrictions
+        spec:
+          forProvider:
+            kubeIdSelector:
+              matchControllerRef: true
+            ips:
+              - 0.0.0.0/0
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.serviceName
+          toFieldPath: spec.forProvider.serviceName
+    - name: s3user
+      base:
+        apiVersion: user.cloud.ovh.upbound.io/v1alpha1
+        kind: User
+        spec:
+          forProvider:
+            description: "customer_admin"
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.serviceName
+          toFieldPath: spec.forProvider.serviceName
+    - name: s3Credentials
+      base:
+        apiVersion: user.cloud.ovh.upbound.io/v1alpha1
+        kind: S3Credentials
+        spec:
+          forProvider:
+            userIdSelector:
+              matchControllerRef: true
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.serviceName
+          toFieldPath: spec.forProvider.serviceName
+    - name: s3Policy
+      base:
+        apiVersion: user.cloud.ovh.upbound.io/v1alpha1
+        kind: S3Policy
+        spec:
+          forProvider:
+            policy: "{\"Statement\": [{\"Sid\": \"RWContainer\", \"Effect\": \"Allow\", \"Action\": [\"s3:CreateBucket\", \"s3:GetObject\", \"s3:PutObject\", \"s3:DeleteObject\", \"s3:ListBucket\", \"s3:ListMultipartUploadParts\", \"s3:ListBucketMultipartUploads\", \"s3:AbortMultipartUpload\", \"s3:GetBucketLocation\"], \"Resource\": [\"arn:aws:s3:::*\", \"arn:aws:s3:::*/*\"]}, {\"Sid\": \"ProtectTerraform\", \"Effect\": \"Deny\", \"Action\": [\"s3:*\"], \"Resource\": [\"arn:aws:s3:::test-terraform-state\", \"arn:aws:s3:::test-terraform-state/*\"]}]}"
+            userIdSelector:
+              matchControllerRef: true
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.serviceName
+          toFieldPath: spec.forProvider.serviceName

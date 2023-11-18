@@ -1,0 +1,18 @@
+---
+apiVersion: kube.cloud.ovh.saagie.io/v1alpha1
+kind: Kube
+metadata:
+  name: dev
+  annotations:
+    "crossplane.io/external-name": "607a2c62-dfdd-4a96-907b-a15fc123e791"
+spec:
+  managementPolicies:
+  - Observe
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+    name: "dev"
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+  writeConnectionSecretToRef:
+    name: kubeconfig
+    namespace: default

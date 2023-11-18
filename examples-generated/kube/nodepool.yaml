@@ -1,0 +1,19 @@
+apiVersion: kube.cloud.ovh.saagie.io/v1alpha1
+kind: NodePool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: kube/v1alpha1/nodepool
+  labels:
+    testing.upbound.io/example-name: node_pool
+  name: node-pool
+spec:
+  forProvider:
+    desiredNodes: 3
+    flavorName: b2-7
+    kubeIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    maxNodes: 3
+    minNodes: 3
+    name: my-pool-1
+    serviceName: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

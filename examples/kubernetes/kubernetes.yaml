@@ -1,0 +1,28 @@
+---
+apiVersion: kube.cloud.ovh.saagie.io/v1alpha1
+kind: Kube
+metadata:
+  name: hello-crossplane
+spec:
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+    name: "test crossplane"
+    region: GRA9
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    version: "1.26"
+
+---
+apiVersion: kube.cloud.ovh.saagie.io/v1alpha1
+kind: IpRestrictions
+metadata:
+  name: "hello-crossplane"
+spec:
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    ips:
+      - 0.0.0.0/0
+    kubeIdRef:
+      name: hello-crossplane

@@ -1,0 +1,19 @@
+---
+apiVersion: ovh.saagie.io/v1alpha1
+kind: Platform
+metadata:
+  name: test
+spec:
+  parameters:
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    region: GRA
+    zone: GRA9
+    postgresql:
+      version: "14"
+      plan: "essential"
+      flavor: "db1-4"
+    kubernetes:
+      version: "1.21"
+      flavorName: "b2-60"
+  compositionRef:
+    name: test

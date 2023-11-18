@@ -1,0 +1,94 @@
+---
+apiVersion: user.cloud.ovh.saagie.io/v1alpha1
+kind: User
+metadata:
+  name: hello-crossplane
+spec:
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+    description: hello-crossplane
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    roleNames:
+      - objectstore_operator
+  writeConnectionSecretToRef:
+    name: s3-user
+    namespace: default
+---
+apiVersion: user.cloud.ovh.saagie.io/v1alpha1
+kind: User
+metadata:
+  name: hello-crossplane-observ
+  annotations:
+    "crossplane.io/external-name": "267995"
+spec:
+  managementPolicies:
+  - Observe
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+  writeConnectionSecretToRef:
+   name: s3user
+   namespace: default
+---
+apiVersion: user.cloud.ovh.saagie.io/v1alpha1
+kind: S3Credentials
+metadata:
+  name: hello-crossplane
+spec:
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+   serviceName: 7485b2ac7d67456a888409f0e882e7eb
+   userIdRef:
+     name: hello-crossplane-observ
+  writeConnectionSecretToRef:
+    name: s3-credentials
+    namespace: default
+#     name: hello-crossplane
+---
+apiVersion: user.cloud.ovh.saagie.io/v1alpha1
+kind: S3Credentials
+metadata:
+  name: hello-crossplane-observ
+  annotations:
+    "crossplane.io/external-name": "b080f4bf08604cde92f05e936d504490"
+spec:
+  managementPolicies:
+    - Observe
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    userIdRef:
+      name: hello-crossplane
+---
+apiVersion: user.cloud.ovh.saagie.io/v1alpha1
+kind: S3Policy
+metadata:
+  name: hello-crossplane
+spec:
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    policy: "{\"Statement\": [{\"Sid\": \"RWContainer\", \"Effect\": \"Allow\", \"Action\": [\"s3:CreateBucket\", \"s3:GetObject\", \"s3:PutObject\", \"s3:DeleteObject\", \"s3:ListBucket\", \"s3:ListMultipartUploadParts\", \"s3:ListBucketMultipartUploads\", \"s3:AbortMultipartUpload\", \"s3:GetBucketLocation\"], \"Resource\": [\"arn:aws:s3:::*\", \"arn:aws:s3:::*/*\"]}, {\"Sid\": \"ProtectTerraform\", \"Effect\": \"Deny\", \"Action\": [\"s3:*\"], \"Resource\": [\"arn:aws:s3:::test-terraform-state\", \"arn:aws:s3:::test-terraform-state/*\"]}]}"
+    userIdRef:
+      name: hello-crossplane
+---
+apiVersion: user.cloud.ovh.saagie.io/v1alpha1
+kind: S3Policy
+metadata:
+  name: hello-crossplane-observ
+  annotations:
+    "crossplane.io/external-name": "7485b2ac7d67456a888409f0e882e7eb/313903"
+spec:
+  managementPolicies:
+    - Observe
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    userIdRef:
+      name: hello-crossplane

@@ -1,0 +1,19 @@
+---
+apiVersion: kube.cloud.ovh.saagie.io/v1alpha1
+kind: NodePool
+metadata:
+  name: hello-crossplane
+  annotations:
+    "crossplane.io/external-name": "607a2c62-dfdd-4a96-907b-a15fc123e791"
+spec:
+  providerConfigRef:
+    name: ovh-provider-config
+  forProvider:
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    name: hello-crossplane
+    flavorName: b2-7
+    desiredNodes: 1
+    monthlyBilled: false
+    kubeIdRef:
+      name: hello-crossplane
+

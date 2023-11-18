@@ -1,0 +1,37 @@
+apiVersion: database.cloud.ovh.saagie.io/v1alpha1
+kind: Database
+metadata:
+  name: hello-crossplane
+spec:
+  forProvider:
+    description: "postgresql test crossplane"
+    engine: postgresql
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    version: "14"
+    plan: essential
+    flavor: db1-4
+    nodes:
+      - region: GRA
+  providerConfigRef:
+    name: ovh-provider-config
+---
+apiVersion: database.cloud.ovh.saagie.io/v1alpha1
+kind: Database
+metadata:
+  name: hello-crossplane-observe
+  annotations:
+    "crossplane.io/external-name": "806768e8-82ab-4c0e-9451-ee3b0ae5f200"
+spec:
+  managementPolicies:
+    - Observe
+  forProvider:
+    description: "postgresql test crossplane"
+    engine: postgresql
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+    version: "14"
+    plan: essential
+    flavor: db1-4
+    nodes:
+      - region: GRA
+  providerConfigRef:
+    name: ovh-provider-config
