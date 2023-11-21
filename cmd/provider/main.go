@@ -26,12 +26,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/saagie/upjet-provider-ovh/apis"
-	"github.com/saagie/upjet-provider-ovh/apis/v1alpha1"
-	"github.com/saagie/upjet-provider-ovh/config"
-	"github.com/saagie/upjet-provider-ovh/internal/clients"
-	"github.com/saagie/upjet-provider-ovh/internal/controller"
-	"github.com/saagie/upjet-provider-ovh/internal/features"
+	"saagie.io/provider-ovh/apis"
+	"saagie.io/provider-ovh/apis/v1alpha1"
+	"saagie.io/provider-ovh/config"
+	"saagie.io/provider-ovh/internal/clients"
+	"saagie.io/provider-ovh/internal/controller"
+	"saagie.io/provider-ovh/internal/features"
 )
 
 func main() {
@@ -55,7 +55,7 @@ func main() {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	zl := zap.New(zap.UseDevMode(*debug))
-	log := logging.NewLogrLogger(zl.WithName("upjet-provider-template"))
+	log := logging.NewLogrLogger(zl.WithName("provider-ovh"))
 	if *debug {
 		// The controller-runtime runs with a no-op logger by default. It is
 		// *very* verbose even at info level, so we only provide it a real
@@ -70,7 +70,7 @@ func main() {
 
 	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
 		LeaderElection:   *leaderElection,
-		LeaderElectionID: "crossplane-leader-election-upjet-provider-template",
+		LeaderElectionID: "crossplane-leader-election-provider-ovh",
 		Cache: cache.Options{
 			SyncPeriod: syncPeriod,
 		},

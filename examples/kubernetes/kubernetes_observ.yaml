@@ -4,15 +4,44 @@ kind: Kube
 metadata:
   name: dev
   annotations:
-    "crossplane.io/external-name": "607a2c62-dfdd-4a96-907b-a15fc123e791"
+    "crossplane.io/external-name": "c8759abc-7aa0-413c-b89f-3da583f0ce91"
 spec:
   managementPolicies:
   - Observe
   providerConfigRef:
-    name: ovh-provider-config
+    name: default
   forProvider:
     name: "dev"
     serviceName: 7485b2ac7d67456a888409f0e882e7eb
   writeConnectionSecretToRef:
     name: kubeconfig
     namespace: default
+---
+apiVersion: kube.cloud.ovh.saagie.io/v1alpha1
+kind: NodePool
+metadata:
+  name: dev
+  annotations:
+    "crossplane.io/external-name": "047da6ee-f1dc-412b-9451-0b064847ed97"
+spec:
+  managementPolicies:
+    - Observe
+  forProvider:
+    name: "dev"
+    kubeIdRef:
+      name: dev
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb
+---
+apiVersion: kube.cloud.ovh.saagie.io/v1alpha1
+kind: IpRestrictions
+metadata:
+  name: dev
+  annotations:
+    "crossplane.io/external-name": "c8759abc-7aa0-413c-b89f-3da583f0ce91"
+spec:
+  managementPolicies:
+    - Observe
+  forProvider:
+    kubeIdRef:
+      name: dev
+    serviceName: 7485b2ac7d67456a888409f0e882e7eb

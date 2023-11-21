@@ -14,11 +14,11 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/saagie/upjet-provider-ovh/apis/database/v1alpha1"
-	v1alpha1kube "github.com/saagie/upjet-provider-ovh/apis/kube/v1alpha1"
-	v1alpha1user "github.com/saagie/upjet-provider-ovh/apis/user/v1alpha1"
-	v1alpha1apis "github.com/saagie/upjet-provider-ovh/apis/v1alpha1"
-	v1beta1 "github.com/saagie/upjet-provider-ovh/apis/v1beta1"
+	v1alpha1 "saagie.io/provider-ovh/apis/database/v1alpha1"
+	v1alpha1kube "saagie.io/provider-ovh/apis/kube/v1alpha1"
+	v1alpha1user "saagie.io/provider-ovh/apis/user/v1alpha1"
+	v1alpha1apis "saagie.io/provider-ovh/apis/v1alpha1"
+	v1beta1 "saagie.io/provider-ovh/apis/v1beta1"
 )
 
 func init() {

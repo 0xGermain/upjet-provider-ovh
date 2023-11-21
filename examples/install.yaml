@@ -3,4 +3,4 @@ kind: Provider
 metadata:
   name: provider-ovh
 spec:
-  package: saagie/upjet-provider-ovh:v0.1.0
+  package: saagie/provider-ovh:v0.1.0

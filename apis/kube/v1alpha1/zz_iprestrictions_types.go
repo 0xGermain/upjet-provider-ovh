@@ -53,7 +53,7 @@ type IpRestrictionsParameters struct {
 
 	// The id of the managed Kubernetes cluster. Changing this value recreates the resource.
 	// Kube ID
-	// +crossplane:generate:reference:type=github.com/saagie/upjet-provider-ovh/apis/kube/v1alpha1.Kube
+	// +crossplane:generate:reference:type=saagie.io/provider-ovh/apis/kube/v1alpha1.Kube
 	// +kubebuilder:validation:Optional
 	KubeID *string `json:"kubeId,omitempty" tf:"kube_id,omitempty"`
 

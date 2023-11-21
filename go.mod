@@ -1,4 +1,4 @@
-module github.com/saagie/upjet-provider-ovh
+module saagie.io/provider-ovh
 
 go 1.19
 

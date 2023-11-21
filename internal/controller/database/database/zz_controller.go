@@ -23,8 +23,8 @@ import (
 	"github.com/crossplane/upjet/pkg/terraform"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/saagie/upjet-provider-ovh/apis/database/v1alpha1"
-	features "github.com/saagie/upjet-provider-ovh/internal/features"
+	v1alpha1 "saagie.io/provider-ovh/apis/database/v1alpha1"
+	features "saagie.io/provider-ovh/internal/features"
 )
 
 // Setup adds a controller that reconciles Database managed resources.

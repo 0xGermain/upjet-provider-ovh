@@ -10,14 +10,14 @@ import (
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
-	"github.com/saagie/upjet-provider-ovh/config/database"
-	"github.com/saagie/upjet-provider-ovh/config/kube"
-	"github.com/saagie/upjet-provider-ovh/config/user"
+	"saagie.io/provider-ovh/config/database"
+	"saagie.io/provider-ovh/config/kube"
+	"saagie.io/provider-ovh/config/user"
 )
 
 const (
 	resourcePrefix = "ovh"
-	modulePath     = "github.com/saagie/upjet-provider-ovh"
+	modulePath     = "saagie.io/provider-ovh"
 )
 
 //go:embed schema.json

@@ -11,7 +11,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/pipeline"
 
-	"github.com/saagie/upjet-provider-ovh/config"
+	"saagie.io/provider-ovh/config"
 )
 
 func main() {

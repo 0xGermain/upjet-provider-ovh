@@ -9,14 +9,14 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
-	database "github.com/saagie/upjet-provider-ovh/internal/controller/database/database"
-	iprestrictions "github.com/saagie/upjet-provider-ovh/internal/controller/kube/iprestrictions"
-	kube "github.com/saagie/upjet-provider-ovh/internal/controller/kube/kube"
-	nodepool "github.com/saagie/upjet-provider-ovh/internal/controller/kube/nodepool"
-	providerconfig "github.com/saagie/upjet-provider-ovh/internal/controller/providerconfig"
-	s3credentials "github.com/saagie/upjet-provider-ovh/internal/controller/user/s3credentials"
-	s3policy "github.com/saagie/upjet-provider-ovh/internal/controller/user/s3policy"
-	user "github.com/saagie/upjet-provider-ovh/internal/controller/user/user"
+	database "saagie.io/provider-ovh/internal/controller/database/database"
+	iprestrictions "saagie.io/provider-ovh/internal/controller/kube/iprestrictions"
+	kube "saagie.io/provider-ovh/internal/controller/kube/kube"
+	nodepool "saagie.io/provider-ovh/internal/controller/kube/nodepool"
+	providerconfig "saagie.io/provider-ovh/internal/controller/providerconfig"
+	s3credentials "saagie.io/provider-ovh/internal/controller/user/s3credentials"
+	s3policy "saagie.io/provider-ovh/internal/controller/user/s3policy"
+	user "saagie.io/provider-ovh/internal/controller/user/user"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to

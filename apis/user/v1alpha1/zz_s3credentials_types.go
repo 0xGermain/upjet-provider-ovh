@@ -44,7 +44,7 @@ type S3CredentialsParameters struct {
 	ServiceName *string `json:"serviceName,omitempty" tf:"service_name,omitempty"`
 
 	// The user ID
-	// +crossplane:generate:reference:type=github.com/saagie/upjet-provider-ovh/apis/user/v1alpha1.User
+	// +crossplane:generate:reference:type=saagie.io/provider-ovh/apis/user/v1alpha1.User
 	// +kubebuilder:validation:Optional
 	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
 
