@@ -76,3 +76,4 @@ spec:
     name: production
   writeConnectionSecretToRef:
     name: my-db-connection-details
+    
